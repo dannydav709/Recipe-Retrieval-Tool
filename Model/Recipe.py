@@ -3,8 +3,9 @@ from PIL import Image
 import io
 
 class Recipe:
-    def __init__(self, title: str, ingredients, instructions, image_url):
+    def __init__(self, title: str, recipeID, ingredients, instructions, image_url):
         self.title = title
+        self.id = recipeID
         self.ingredients = ingredients
         self.instructions = instructions
         self.image_url = image_url  # Holds image url that is provided in the API response
@@ -40,8 +41,10 @@ class Recipe:
             self.image = Image.open(image_bytes)
 
             # Optionally display the image using the default image viewer
-            self.image.show()
+            # self.image.show()
 
+    def get_id(self):
+        return self.id
 
     def get_title(self):
         return self.title
@@ -55,9 +58,11 @@ class Recipe:
     def get_image(self):
         return self.image
 
-    def print_Recipe(self):
+    def print(self):
         print(f'Recipe: {self.title}')
+        print(f'Recipe ID: {self.id}')
         print("Ingredients:")
         print(self.ingredients)
         print("Instructions:")
         print(self.instructions)
+

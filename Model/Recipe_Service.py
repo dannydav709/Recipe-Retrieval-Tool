@@ -1,3 +1,4 @@
+import traceback
 from .Recipe import Recipe
 
 
@@ -5,9 +6,9 @@ class Recipe_Service:
     def __init__(self, recipes: list):
 
         """
-        Takes the recipes list (originally contained in the API call result), and holds JSON object
+        Takes the "recipes" list (originally contained in the API call result), and processes them.
         """
-        self.recipes: list = recipes
+        self.__recipes: list = recipes
 
     def process_ingredients(self, recipe_json):
         """
@@ -46,6 +47,30 @@ class Recipe_Service:
         strInstructions = recipe_json.get("strInstructions")
         # The URL of the image of the final cooked recipe
         strMealThumb = recipe_json.get("strMealThumb")
-        recipe = Recipe(title, self.process_ingredients(recipe_json), strInstructions, strMealThumb)
+        idMeal = recipe_json.get("idMeal")
+        recipe = Recipe(title, idMeal, self.process_ingredients(recipe_json), strInstructions, strMealThumb)
         return recipe
+
+    def process_recipes(self, recipes: list):
+        """
+        Will take a list of "recipe (JSON)" and will process it into a list of "Recipe" objects
+
+        Returns:
+            List of "Recipe" Objects
+        """
+        processed_recipes = []
+        try:
+            if recipes:
+                for recipe in recipes:
+                    processed_recipes.append(self.process_recipe(recipe))
+                return processed_recipes
+            else:
+                raise Exception("Recipes list is empty")
+
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+
+    def get_recipes(self):
+        return self.__recipes
 
